@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yb.manager.mapper.TestMapper">
+
+    <resultMap id="BaseResultMap" type="com.yb.manager.entity.Test">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="time" column="time" jdbcType="TIMESTAMP"/>
+        <result property="money" column="money" jdbcType="DOUBLE"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,time,
+        money
+    </sql>
+
+    <select id="getSevenDate" resultType="com.yb.manager.entity.vo.TestVO">
+        SELECT MAX(money)                      AS money,
+               DATE_FORMAT(t.time, '%Y-%m-%d') AS date
+        FROM test t
+        WHERE DATE_SUB(CURDATE(), INTERVAL 7 DAY) <![CDATA[ <= ]]> date(t.time)
+        GROUP BY DATE_FORMAT(t.time, '%Y-%m-%d')
+        ORDER BY DATE_FORMAT(t.time, '%Y-%m-%d')
+    </select>
+
+</mapper>
