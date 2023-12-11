@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.5.12</version>
+        <relativePath/>
+    </parent>
+
+
+    <groupId>com.yb</groupId>
+    <artifactId>yb-township-server</artifactId>
+    <version>2.0.0</version>
+    <name>yb-township-server</name>
+    <description>数字乡村</description>
+    <packaging>pom</packaging>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <yb.version>2.0.0</yb.version>
+        <mysql.version>8.0.11</mysql.version>
+        <java-jwt.version>3.10.3</java-jwt.version>
+        <druid.version>1.1.22</druid.version>
+        <guava.version>29.0-jre</guava.version>
+        <hutool.version>5.7.2</hutool.version>
+        <commons-pool2.version>2.6.2</commons-pool2.version>
+        <commons-io.version>2.5</commons-io.version>
+        <commons-lang3.version>3.8.1</commons-lang3.version>
+        <fastjson.version>1.2.62</fastjson.version>
+        <lombok.version>1.18.12</lombok.version>
+        <docker.manven.version>1.2.2</docker.manven.version>
+        <docker.image.prefix>yb</docker.image.prefix>
+        <knife4j.version>2.0.9</knife4j.version>
+        <swagger.version>2.10.5</swagger.version>
+        <swagger-models.version>1.5.21</swagger-models.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <minio.version>4.0.0</minio.version>
+        <maven-surefire-skip>2.20.1</maven-surefire-skip>
+        <pinyin4j.version>2.5.0</pinyin4j.version>
+        <collections4.version>4.4</collections4.version>
+        <redisson.version>3.14.0</redisson.version>
+        <mqttv3.client.version>1.2.2</mqttv3.client.version>
+        <easyexcel.version>2.2.6</easyexcel.version>
+        <bcprov-jdk16.version>1.46</bcprov-jdk16.version>
+        <QLExpress.version>3.2.0</QLExpress.version>
+    </properties>
+
+    <modules>
+        <!-- 基础通用规则模块 -->
+        <module>yb-common</module>
+
+        <!-- 基础公共模块 -->
+        <module>yb-base</module>
+
+        <!-- 插件API模块 -->
+        <module>yb-api</module>
+
+        <!-- 大屏模块 -->
+        <module>yb-manager</module>
+
+        <!-- 主启动模块 -->
+        <module>yb-web-app</module>
+
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!--  系统模块版本统一管理*****************************************开始 -->
+            <dependency>
+                <groupId>com.yb</groupId>
+                <artifactId>yb-common</artifactId>
+                <version>${yb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yb</groupId>
+                <artifactId>yb-base</artifactId>
+                <version>${yb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yb</groupId>
+                <artifactId>yb-manager</artifactId>
+                <version>${yb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yb</groupId>
+                <artifactId>yb-manager-api</artifactId>
+                <version>${yb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yb</groupId>
+                <artifactId>yb-notice</artifactId>
+                <version>${yb.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.yb</groupId>
+                <artifactId>yb-tiktok</artifactId>
+                <version>${yb.version}</version>
+            </dependency>
+
+            <!--  系统模块版本统一管理*****************************************结束 -->
+
+            <!-- fastjson -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!-- lombok插件-->
+            <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${java-jwt.version}</version>
+            </dependency>
+
+            <!-- knife4j -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <!-- Swagger API文档 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+            <!-- mybatis-plus-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- minio文件存储服务 -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+
+            <!--集合工具类-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${collections4.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-data-21</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.eclipse.paho</groupId>
+                <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+                <version>${mqttv3.client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+
+</project>
