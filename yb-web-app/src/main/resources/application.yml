@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 8077
 #连接数据库
 spring:
   #环境
@@ -8,77 +8,7 @@ spring:
   profiles:
     active: dev
 
-  datasource:
-    username: root
-    password: 724933
-    url: jdbc:mysql://43.142.146.167:3306/db?useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    #数据源用druid
-    type: com.alibaba.druid.pool.DruidDataSource
-    #数据源其他配置
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
 
-  # redis 配置
-  redis:
-    database: 1
-    iddatabase: 1
-    host: 10.10.15.46
-    lettuce:
-      pool:
-        max-active: 8 #最大连接数据库连接数,设 0 为没有限制
-        max-idle: 8 #最大等待连接中的数量,设 0 为没有限制
-        max-wait: -1ms #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
-        min-idle: 0 #最小等待连接中的数量,设 0 为没有限制
-      shutdown-timeout: 100ms
-    password: "ybzl123456."
-    port: 56379
-
-knife4j:
-  enable: true
-  production: false
-  basic:
-    enable: false
-    username: admin
-    password: 123456
-  setting:
-    enableOpenApi: false
-    enableSwaggerModels: false
-    enableFooter: false
-    enableFooterCustom: true
-    footerCustomContent: Copyright © 2023 医标智联
-
-
-#mybatis:
-#  #全局配置文件
-#  config-location: classpath:mybatis/mybatis-config.xml
-#  #mapper配置文件
-#  mapper-locations: classpath:mybatis/mapper/*.xml
-
-mybatis-plus:
-  configuration:
-    call-setters-on-nulls: true
-    map-underscore-to-camel-case: true
-    jdbc-type-for-null: null
-    auto-mapping-behavior: full
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  global-config:
-    enable-sql-runner: true
-    db-config:
-      id-type: ASSIGN_ID
-  mapper-locations: classpath*:com/yb/**/mapper/**/*.xml
-
-logging:
-  config: classpath:logback-spring.xml
 
 
 

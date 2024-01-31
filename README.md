@@ -3,8 +3,11 @@
 springboot 模块化平台后端项目
 
 ##### 服务启动要求
-启动时添加 --spring.cloud.bootstrap.name=bootstrap-dev/prod/rc/test
-如果没有添加默认链接的是本机的consul
+
+##### 打包方式
+docker build -t yb-web-app:2.0.0 .
+docker run -d --name yb-web-app -p 10001:8085 yb-web-app:2.0.0
+
 
 
 ##### 注意事项
