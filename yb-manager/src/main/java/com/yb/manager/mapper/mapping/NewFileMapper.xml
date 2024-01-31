@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yb.manager.mapper.NewFileMapper">
+
+    <resultMap id="BaseResultMap" type="com.yb.manager.entity.NewFile">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="folderId" column="folder_id" jdbcType="BIGINT"/>
+            <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+            <result property="fileType" column="file_type" jdbcType="VARCHAR"/>
+            <result property="fileSize" column="file_size" jdbcType="BIGINT"/>
+            <result property="fileMd5" column="file_md5" jdbcType="VARCHAR"/>
+            <result property="storeName" column="store_name" jdbcType="VARCHAR"/>
+            <result property="open" column="open" jdbcType="BIT"/>
+            <result property="ico" column="ico" jdbcType="VARCHAR"/>
+            <result property="thumb" column="thumb" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="created_by" jdbcType="BIGINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyBy" column="modify_by" jdbcType="BIGINT"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+            <result property="version" column="version" jdbcType="BIGINT"/>
+            <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+            <result property="type" column="type" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <select id="fileList" resultType="com.yb.manager.entity.NewFile">
+        SELECT
+            id,
+            folder_id,
+            type,
+            file_name,
+            file_type,
+            file_size,
+            file_md5,
+            store_name,
+            OPEN,
+            ico,
+            thumb,
+            created_by,
+            created_time,
+            modify_by,
+            modify_time,
+            version,
+            deleted
+        FROM
+            new_file
+        WHERE
+             deleted = 0
+        <if test="userId != null ">
+            AND created_by = #{userId}
+        </if>
+
+        <if test="folderId != null ">
+            AND folder_id = #{folderId}
+        </if>
+
+        <if test="fileName != null ">
+            AND file_name like concat('%', #{fileName}, '%')
+        </if>
+
+        <if test="startTime != null and startTime != ''">
+            and date_format(created_time,'%y%m%d') <![CDATA[ >= ]]> date_format(#{startTime},'%y%m%d')
+        </if>
+
+        <if test="endTime != null and endTime != ''">
+            and date_format(created_time,'%y%m%d') <![CDATA[ <= ]]> date_format(#{endTime},'%y%m%d')
+        </if>
+
+        <if test="fileType != null and fileType !='' ">
+            AND file_type like concat('%', #{fileType}, '%')
+        </if>
+
+        ORDER BY  created_time DESC
+    </select>
+
+</mapper>

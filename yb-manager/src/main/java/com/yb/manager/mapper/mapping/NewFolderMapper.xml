@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yb.manager.mapper.NewFolderMapper">
+
+    <resultMap id="BaseResultMap" type="com.yb.manager.entity.NewFolder">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="folderName" column="folder_name" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="type" column="type" jdbcType="BIGINT"/>
+            <result property="createdBy" column="created_by" jdbcType="BIGINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyBy" column="modify_by" jdbcType="BIGINT"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+            <result property="version" column="version" jdbcType="BIGINT"/>
+            <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <select id="findParentById" resultType="com.yb.manager.entity.NewFolder">
+        SELECT T2.id, T2.folder_name
+        FROM (
+                 SELECT
+                     @r AS _id,
+                     (SELECT @r := parent_id FROM new_folder WHERE id = _id) AS parent_id,
+                     @l := @l + 1 AS lvl
+                 FROM
+                         (SELECT @r := #{id}, @l := 0) vars,
+                         new_folder h
+                 WHERE @r &lt;&gt; 0) T1
+                 JOIN new_folder T2 ON T1._id = T2.id
+        ORDER BY T1.lvl DESC
+    </select>
+
+    <select id="getChildNode" resultType="com.yb.manager.entity.vo.NewFolderVO">
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        t1.*,
+        IF
+        ( FIND_IN_SET( parent_id, @parent_ids ) > 0, @parent_ids := CONCAT( @parent_ids, ',', id ), '0' ) AS ischild
+        FROM
+        ( SELECT * FROM new_folder AS t WHERE t.deleted = 0 ORDER BY t.id ) t1,
+        ( SELECT @parent_ids := #{id} ) t2
+        ) t3
+        WHERE t3.deleted = 0
+    </select>
+
+    <select id="folderList" resultType="com.yb.manager.entity.NewFolder">
+        SELECT
+            id,
+            folder_name,
+            parent_id,
+            type,
+            created_by,
+            created_time,
+            modify_by,
+            modify_time,
+            version,
+            deleted
+        FROM
+            new_folder
+        WHERE  deleted = 0
+        <if test="userId != null ">
+            AND created_by = #{userId}
+        </if>
+
+        <if test="parentId != null ">
+            AND parent_id = #{parentId}
+        </if>
+
+        <if test="fileName != null ">
+            AND folder_name like concat('%', #{fileName}, '%')
+        </if>
+
+        <if test="startTime != null and startTime != ''">
+            and date_format(created_time,'%y%m%d') <![CDATA[ >= ]]> date_format(#{startTime},'%y%m%d')
+        </if>
+
+        <if test="endTime != null and endTime != ''">
+            and date_format(created_time,'%y%m%d') <![CDATA[ <= ]]> date_format(#{endTime},'%y%m%d')
+        </if>
+        ORDER BY
+        created_time DESC
+    </select>
+
+</mapper>

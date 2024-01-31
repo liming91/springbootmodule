@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yb.manager.mapper.NewShareMapper">
+
+    <resultMap id="BaseResultMap" type="com.yb.manager.entity.NewShare">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+            <result property="ico" column="ico" jdbcType="VARCHAR"/>
+            <result property="fileSize" column="file_size" jdbcType="BIGINT"/>
+            <result property="fileType" column="file_type" jdbcType="VARCHAR"/>
+            <result property="fileId" column="file_id" jdbcType="BIGINT"/>
+            <result property="open" column="open" jdbcType="BIT"/>
+            <result property="shareCode" column="share_code" jdbcType="VARCHAR"/>
+            <result property="pickupCode" column="pickup_code" jdbcType="VARCHAR"/>
+            <result property="state" column="state" jdbcType="INTEGER"/>
+            <result property="views" column="views" jdbcType="BIGINT"/>
+            <result property="createdBy" column="created_by" jdbcType="BIGINT"/>
+            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+            <result property="modifyBy" column="modify_by" jdbcType="BIGINT"/>
+            <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+            <result property="version" column="version" jdbcType="BIGINT"/>
+            <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+            <result property="shareObj" column="share_obj" jdbcType="VARCHAR"/>
+            <result property="shareAuth" column="share_auth" jdbcType="OTHER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,file_name,ico,
+        file_size,file_type,file_id,
+        open,share_code,pickup_code,
+        state,views,created_by,
+        created_time,modify_by,modify_time,
+        version,deleted,share_obj,
+        share_auth
+    </sql>
+
+    <select id="shareList" resultType="com.yb.manager.entity.NewShare">
+        SELECT
+            id,
+            share_code,
+            modify_by,
+            file_name,
+            version,
+            deleted,
+            modify_time,
+            ico,
+            file_size,
+            created_by,
+            created_time,
+            pickup_code,
+            state,
+            views,
+            open,
+            file_type,
+            file_id,
+            (SELECT thumb FROM new_file WHERE id=file_id) AS file_path,
+            share_obj,
+            share_auth
+        FROM
+            new_share
+        WHERE
+            deleted = 0
+          <if test="id != null ">
+              and id = #{id}
+          </if>
+
+        <if test="fileName != null ">
+            AND file_name like concat('%', #{fileName}, '%')
+        </if>
+
+        <if test="startTime != null and startTime != ''">
+            and date_format(created_time,'%y%m%d') <![CDATA[ >= ]]> date_format(#{startTime},'%y%m%d')
+        </if>
+
+        <if test="endTime != null and endTime != ''">
+            and date_format(created_time,'%y%m%d') <![CDATA[ <= ]]> date_format(#{endTime},'%y%m%d')
+        </if>
+          AND INSTR(share_obj,#{userId})
+        order by  created_time desc
+    </select>
+</mapper>
